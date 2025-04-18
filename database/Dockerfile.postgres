@@ -1,0 +1,7 @@
+# New image for application database
+FROM postgres:15.3
+
+# PostgreSQL config
+ENV POSTGRES_USER=admin
+ENV POSTGRES_PASSWORD=admin123
+ENV POSTGRES_DB=inventory_db

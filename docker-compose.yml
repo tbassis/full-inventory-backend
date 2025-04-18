@@ -1,0 +1,30 @@
+services:
+  db:
+    #build: # Uses the config defined on the Dockerfile.postgres 
+    #  context: .
+    #  dockerfile: database/Dockerfile.postgres
+    image: postgres:15.3 # Uses the image of the DOcker Hub
+    container_name: inventory-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: inventory_db # create the db when initialize the container
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # volume for data persist
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql # injectsql script  
+    networks:
+      - app-network # network that the container will be connected
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d inventory_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
