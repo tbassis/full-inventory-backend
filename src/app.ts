@@ -1,17 +1,24 @@
 import express from "express";
 import sequelize from "./config/database";
 
+import countriesRoutes from "./routes/countries.routes";
+
 class App {
   public app: express.Application;
 
   constructor() {
     this.app = express();
     this.config();
+    this.routes();
     this.database();
   }
 
   private config(): void {
     this.app.use(express.json());
+  }
+
+  private routes(): void {
+    this.app.use("/api/countries", countriesRoutes);
   }
 
   private async database(): Promise<void> {
